@@ -7,6 +7,8 @@
 int main()
 {
 	int i;
+	int retval;
+
 	char *str;
 	char buf[BUF_SIZE];
 
@@ -20,20 +22,30 @@ int main()
 		printf("\tCompiling of %s does not conform to C89 or C99\n", __FILE__);
 	};
 
-	printf("\nMapping error codes to error message strings:\n");
+	printf("\nstrerror() maps error codes to error message strings:\n");
 	for (i=0; i<256; i++) {
 		str = strerror(i);
 		printf("\terrnum = %d: %s\n", i, str);
 	};
 
 #if (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
-	printf("\nPOSIX specified at compilation:\n");
+	printf("\nstrerror_r() POSIX specified at compilation:\n");
 	for (i=0; i<256; i++) {
-		str = strerror(i);
+		retval = strerror_r(i, buf, sizeof(buf));
+		if (retval == 0) {
+			printf("\terrnum = %d: %s\n", i, str);
+		} else {
+			printf("strerror_r() returned a non-zero value.\n");
+		};
+	};
+#elif _GNU_SOURCE
+	printf("\nstrerror_r() GNU specified at compilation:\n");
+	for (i=0; i<256; i++) {
+		str = strerror_r(i, buf, sizeof(buf));
 		printf("\terrnum = %d: %s\n", i, str);
 	};
 #else
-	printf("\nGNU specified at compilation:\n");
+	printf("\nstrerror_r() fail\n");
 #endif
 
 	return 0;
