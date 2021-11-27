@@ -22,10 +22,6 @@ int main()
 		printf("\tCompiling of %s does not conform to C89 or C99\n", __FILE__);
 	};
 
-	printf("Some feature test macros of interest:\n");
-	printf("_POSIX_C_SOURCE = %l\n", _POSIX_C_SOURCE);
-	printf("_XOPEN_SOURCE = %d\n", _XOPEN_SOURCE);
-
 	printf("\nstrerror() maps error codes to error message strings:\n");
 	for (i=0; i<256; i++) {
 		str = strerror(i);
@@ -35,11 +31,12 @@ int main()
 #if (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
 	printf("\nstrerror_r() POSIX specified at compilation:\n");
 	for (i=0; i<256; i++) {
+		errno = 0;
 		retval = strerror_r(i, buf, sizeof(buf));
-		if (retval == 0) {
-			printf("\terrnum = %d: %s\n", i, str);
+		if (errno == 0) {
+			printf("\tretval = %d: msg = %s\n", retval, buf);
 		} else {
-			printf("strerror_r() returned a non-zero value.\n");
+			printf("strerror_r() errored and returned %d.\n", retval);
 		};
 	};
 #elif _GNU_SOURCE
