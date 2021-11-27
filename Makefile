@@ -9,5 +9,5 @@ errors:
 	@if [ -f $(build_dir)/errors ]; then\
 		rm -v $(build_dir)/errors;\
 	fi
-	$(CC) -o $(build_dir)/errors $(CFLAGS) $(src_dir)/errors.c
+	$(CC) -o $(build_dir)/errors $(CFLAGS) -D_GNU_SOURCE $(src_dir)/errors.c
 
