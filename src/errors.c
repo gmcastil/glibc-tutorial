@@ -3,7 +3,6 @@
 #include <string.h>
 
 #define BUF_SIZE 256
-#define _GNU_SOURCE
 
 int main()
 {
@@ -11,7 +10,6 @@ int main()
 	char *str;
 	char buf[BUF_SIZE];
 
-	printf("The value of the system error number is %d\n", errno);
 	printf("Predefined Macros:\n");
 	printf("\t__LINE__ == %d\n", __LINE__);
 	printf("\t__DATE__ == %s\n", __DATE__);
@@ -22,11 +20,21 @@ int main()
 		printf("\tCompiling of %s does not conform to C89 or C99\n", __FILE__);
 	};
 
-	printf("On this platform, predefined error messages are:\n");
+	printf("\nMapping error codes to error message strings:\n");
 	for (i=0; i<256; i++) {
-		str = strerror_r(i, buf, sizeof(buf));
-		printf("\terrnum %d msg %s\n", i, str);
+		str = strerror(i);
+		printf("\terrnum = %d: %s\n", i, str);
 	};
+
+#if (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
+	printf("\nPOSIX specified at compilation:\n");
+	for (i=0; i<256; i++) {
+		str = strerror(i);
+		printf("\terrnum = %d: %s\n", i, str);
+	};
+#else
+	printf("\nGNU specified at compilation:\n");
+#endif
 
 	return 0;
 }
