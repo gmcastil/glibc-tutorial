@@ -22,6 +22,10 @@ int main()
 		printf("\tCompiling of %s does not conform to C89 or C99\n", __FILE__);
 	};
 
+	printf("Some feature test macros of interest:\n");
+	printf("_POSIX_C_SOURCE = %l\n", _POSIX_C_SOURCE);
+	printf("_XOPEN_SOURCE = %d\n", _XOPEN_SOURCE);
+
 	printf("\nstrerror() maps error codes to error message strings:\n");
 	for (i=0; i<256; i++) {
 		str = strerror(i);
