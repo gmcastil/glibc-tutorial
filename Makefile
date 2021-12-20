@@ -1,13 +1,17 @@
 CC = /usr/bin/gcc
-CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
+CFLAGS = -Wall -pedantic -Wextra -ansi -O0
 
 top_dir = ./
 build_dir = ./build
 gnu_build_dir = ./build/gnu
 posix_build_dir = ./build/posix
+misc_build_dir = ./build/misc
 src_dir = ./src
 
-none:
+clean:
+	@if [ -d $(build_dir) ]; then\
+		rm -vrf $(build_dir);\
+	fi
 
 errors:
 	@if [ ! -d $(build_dir) ]; then\
@@ -28,41 +32,12 @@ errors:
 		-D_GNU_SOURCE\
 		$(src_dir)/perror.c
 
-processes:
-	@if [ ! -d $(build_dir) ]; then\
-		mkdir -pv $(build_dir);\
-		mkdir -pv $(gnu_build_dir);\
-		mkdir -pv $(posix_build_dir);\
-	fi
-
-	$(CC) -o $(gnu_build_dir)/processes $(CFLAGS)\
-		-D_GNU_SOURCE\
-		-DSTACK_COMPLAINT=100\
-		-fno-stack-protector\
-		$(src_dir)/processes.c
-
 stack:
 	@if [ ! -d $(build_dir) ]; then\
-		mkdir -pv $(build_dir);\
-		mkdir -pv $(gnu_build_dir);\
-		mkdir -pv $(posix_build_dir);\
+		mkdir -pv $(misc_build_dir);\
 	fi
 
-	$(CC) -o $(gnu_build_dir)/stack_smashing_canaries\
-		-Wall -pedantic -Wextra -ansi -O0 -g\
-		-D_GNU_SOURCE\
-		-DSTACK_COMPLAINT=100\
+	$(CC) -o $(misc_build_dir)/stack_smashing $(CFLAGS)\
+		-D_USE_COMPLAINING_ARRAY\
 		$(src_dir)/stack_smashing.c
-
-	$(CC) -o $(gnu_build_dir)/stack_smashing_no_canaries\
-		-Wall -pedantic -Wextra -ansi -O0 -g\
-		-fno-stack-protector\
-		-D_GNU_SOURCE\
-		-DSTACK_COMPLAINT=100\
-		$(src_dir)/stack_smashing.c
-
-clean:
-	@if [ -d $(build_dir) ]; then\
-		rm -vrf $(build_dir);\
-	fi
 
