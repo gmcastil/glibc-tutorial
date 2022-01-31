@@ -41,3 +41,7 @@ stack:
 		-D_USE_COMPLAINING_ARRAY\
 		$(src_dir)/stack_smashing.c
 
+vmap:
+	$(CC) -o $(gnu_build_dir)/vmap1 $(CFLAGS)\
+		$(src_dir)/vmap1.c
+

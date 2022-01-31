@@ -35,4 +35,24 @@ isn't allowed to shrink.  This is significant because one can exhaust the amount
 of memory allocated to the process by continually increasing the stack (this
 will undoubtedly be an experiment).
 
+Memory Allocation
 
+  - Static allocation occurs when a varaible is declared globally or statically
+    and the memory to hold it is declared only once by the `exec` procedure and
+    is never freed.
+  - Local variables or function arguments are declared automatically (whatever
+    that means)
+  - Dynamic allocation is performed when memory needs are unknown at compile
+    time (the program itself needs to determine how much memory to store).  This
+    typically done by declaring a variable of pointer type `struct foobar *` and
+    then assigning it the address of the space.  Then the operators `*` and `->`
+    on that pointer variable can be used to refer to the contents of the space.
+
+```
+{
+	struct foobar *ptr = malloc (sizeof *ptr);
+	ptr->name = x;
+	ptr->next = current_foobar;
+	current_foobar = ptr;
+}
+```
