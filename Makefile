@@ -45,3 +45,7 @@ vmap:
 	$(CC) -o $(gnu_build_dir)/vmap1 $(CFLAGS)\
 		$(src_dir)/vmap1.c
 
+static:
+	$(CC) -o $(gnu_build_dir)/static $(CFLAGS)\
+		$(src_dir)/static.c
+
