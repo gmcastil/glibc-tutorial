@@ -1,5 +1,5 @@
 CC = /usr/bin/gcc
-CFLAGS = -Wall -pedantic -Wextra -ansi -O0
+CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
 
 top_dir = ./
 build_dir = ./build
