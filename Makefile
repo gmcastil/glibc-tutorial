@@ -49,3 +49,7 @@ static:
 	$(CC) -o $(gnu_build_dir)/static $(CFLAGS)\
 		$(src_dir)/static.c
 
+pointers:
+	$(CC) -o $(gnu_build_dir)/ptr1 $(CFLAGS)\
+		$(src_dir)/ptr1.c
+
