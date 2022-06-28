@@ -48,8 +48,16 @@ vmap:
 static:
 	$(CC) -o $(gnu_build_dir)/static $(CFLAGS)\
 		$(src_dir)/static.c
+	$(CC) -o $(gnu_build_dir)/stat_auto $(CFLAGS)\
+		$(src_dir)/stat_auto.c
 
 pointers:
 	$(CC) -o $(gnu_build_dir)/ptr1 $(CFLAGS)\
 		$(src_dir)/ptr1.c
+
+virtual:
+	$(CC) -o $(gnu_build_dir)/malloc_ex1 $(CFLAGS)\
+		$(src_dir)/virtual/malloc_ex1.c
+	$(CC) -o $(gnu_build_dir)/null_deref $(CFLAGS)\
+		$(src_dir)/virtual/null_deref.c
 
