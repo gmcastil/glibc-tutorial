@@ -4,28 +4,52 @@
 #include <stdlib.h>
 #include <errno.h>
 
+void squares(uint32_t *bptr, uint32_t length)
+{
+	uint32_t i;
+	uint32_t x;
+
+	for (i=0; i<length; i++) {
+		x = *bptr;
+		bptr[i] = x * x;
+		bptr++;
+	};
+}
+
 int main(void)
 {
-	uint32_t length;  /* length of block to request */
-	uint32_t *bptr;  /* block pointer */
+	uint32_t length;
+	uint32_t *bptr;
 
-	/* Get the number of elements to malloc() for */
+	uint32_t i;
+
 	printf("Enter a valid uint32_t value: ");
 	scanf("%" SCNu32, &length);
 
-	/* Get a block of memory and print out the size of it */
-	errno = 0;
-	bptr = malloc(length);
-	if (bptr) {
-		printf("got something\n");
+	/* Get a block of memory */
+	bptr = malloc(length * 4);
+	if (bptr == NULL) {
+		printf("ERROR: malloc() returned NULL\n");
+		return 1;
 	}
- 	printf("errno from malloc() call was %d\n", errno);
- 
- 	/* Print out the location that it begins */
- 
- 	/* Print out the contents of the memory that was requested */
- 
- 	/* Use the same pointer to ask for another and print out its contents */
+	/* Initialize block of memory */
+	for (i=0; i<length; i++) {
+		bptr[i] = i;
+	}
+	squares(bptr, length);
+	for (i=0; i<length; i++) {
+/*		printf("Address 0x%p = %"PRIu32"\n", (void*) &bptr, *bptr);
+		bptr++; */
+		printf("%"PRIu32"\n", *bptr);
+		bptr++;
+	}
+
+	/* Initialize it to a bunch of integers */
+
+	/* Square the entire array */
+
+	/* Print out the squared values */	
+
 	return 0;
 }
 
