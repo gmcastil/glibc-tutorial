@@ -27,7 +27,7 @@ int main(void)
 	scanf("%" SCNu32, &length);
 
 	/* Get a block of memory */
-	bptr = malloc(length * 4);
+	bptr = malloc(length);
 	if (bptr == NULL) {
 		printf("ERROR: malloc() returned NULL\n");
 		return 1;
@@ -38,9 +38,7 @@ int main(void)
 	}
 	squares(bptr, length);
 	for (i=0; i<length; i++) {
-/*		printf("Address 0x%p = %"PRIu32"\n", (void*) &bptr, *bptr);
-		bptr++; */
-		printf("%"PRIu32"\n", *bptr);
+		printf("Address 0x%p = %"PRIu32"\n", (void*) &bptr, *bptr);
 		bptr++;
 	}
 
