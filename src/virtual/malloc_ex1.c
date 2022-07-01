@@ -4,49 +4,46 @@
 #include <stdlib.h>
 #include <errno.h>
 
-void squares(uint32_t *bptr, uint32_t length)
+void squares(uint32_t *bptr, uint32_t num)
 {
 	uint32_t i;
 	uint32_t x;
 
-	for (i=0; i<length; i++) {
+	for (i=0; i<num; i++) {
 		x = *bptr;
-		bptr[i] = x * x;
-		bptr++;
+		bptr[i * sizeof(uint32_t)] = x * x;
 	};
 }
 
 int main(void)
 {
-	uint32_t length;
-	uint32_t *bptr;
-
 	uint32_t i;
 
-	printf("Enter a valid uint32_t value: ");
-	scanf("%" SCNu32, &length);
+	uint32_t num;
+	uint32_t* bptr;
+
+	printf("Enter number of uint32_t elements to store: ");
+	scanf("%" SCNu32, &num);
 
 	/* Get a block of memory */
-	bptr = malloc(length);
+	bptr = malloc(sizeof(uint32_t) * num);
 	if (bptr == NULL) {
 		printf("ERROR: malloc() returned NULL\n");
 		return 1;
 	}
 	/* Initialize block of memory */
-	for (i=0; i<length; i++) {
-		bptr[i] = i;
+	for (i=0; i<num; i++) {
+		bptr[i*sizeof(uint32_t)] = i;
 	}
-	squares(bptr, length);
-	for (i=0; i<length; i++) {
-		printf("Address 0x%p = %"PRIu32"\n", (void*) &bptr, *bptr);
-		bptr++;
-	}
-
-	/* Initialize it to a bunch of integers */
-
 	/* Square the entire array */
+	squares(bptr, num);
 
 	/* Print out the squared values */	
+	for (i=0; i<num; i++) {
+/*		printf("Addr: 0x%p, Data: 0x%"PRIu32"\n",
+				(void *) bptr[i * sizeof(uint32_t)], *bptr[i * sizeof(uint32_t)]);*/
+		printf("Addr: 0x%p\n", (void *) &bptr[i * sizeof(uint32_t)]);
+	}
 
 	return 0;
 }
