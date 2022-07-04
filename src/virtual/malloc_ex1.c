@@ -11,7 +11,8 @@ void squares(uint32_t *bptr, uint32_t num)
 
 	for (i=0; i<num; i++) {
 		x = *bptr;
-		bptr[i * sizeof(uint32_t)] = x * x;
+		*bptr = x * x;
+		bptr++;
 	};
 }
 
@@ -33,18 +34,17 @@ int main(void)
 	}
 	/* Initialize block of memory */
 	for (i=0; i<num; i++) {
-		bptr[i*sizeof(uint32_t)] = i;
+		*(bptr+i) = i;
 	}
 	/* Square the entire array */
 	squares(bptr, num);
 
 	/* Print out the squared values */	
 	for (i=0; i<num; i++) {
-/*		printf("Addr: 0x%p, Data: 0x%"PRIu32"\n",
-				(void *) bptr[i * sizeof(uint32_t)], *bptr[i * sizeof(uint32_t)]);*/
-		printf("Addr: 0x%p\n", (void *) &bptr[i * sizeof(uint32_t)]);
+		printf("Addr: 0x%p, Data: 0x%08"PRIu32"\n", (void *) (bptr+i), bptr[i]);
 	}
 
+	free(bptr);
 	return 0;
 }
 
