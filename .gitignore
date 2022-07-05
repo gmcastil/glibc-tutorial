@@ -55,5 +55,5 @@ Mkfile.old
 dkms.conf
 
 # Editor related files
-.swp
+.*.swp
 
