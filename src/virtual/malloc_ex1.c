@@ -21,7 +21,7 @@ int main(void)
 	uint32_t i;
 
 	uint32_t num;
-	uint32_t* bptr;
+	uint32_t *bptr;
 
 	printf("Enter number of uint32_t elements to store: ");
 	scanf("%" SCNu32, &num);
