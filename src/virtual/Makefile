@@ -1,7 +1,8 @@
 CC = /usr/bin/gcc
 CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
 
-BUILD = ./build
+TOP = ../..
+BUILD = $(TOP)/build
 
 virtual:
 	$(CC) -o $(BUILD)/malloc_ex1 $(CFLAGS) malloc_ex1.c
