@@ -31,9 +31,9 @@ int main(int args, char *argv[])
 		if ( (bptr == NULL) || (malloc_err != 0) ) {
 			printf("Attempted to malloc() 0x%" PRIx64 "bytes ", bytes);
 			printf("with errno = %" PRId32 "\n", malloc_err);
-			free(bptr);
 			return 0;
 		} else {
+			free(bptr);
 			mb.bptr = bptr;
 			mb.num = num;
 		}
