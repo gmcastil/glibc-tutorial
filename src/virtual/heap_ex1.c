@@ -17,7 +17,7 @@ int main(int args, char *argv[])
 
 	uint32_t malloc_err;
 
-	struct mb;
+	struct block mb;
 
 	num = 0;
 	malloc_err = 0;
@@ -34,7 +34,6 @@ int main(int args, char *argv[])
 			free(bptr);
 			return 0;
 		} else {
-			struct block mb;
 			mb.bptr = bptr;
 			mb.num = num;
 		}
