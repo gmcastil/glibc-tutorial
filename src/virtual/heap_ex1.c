@@ -11,15 +11,15 @@ struct block {
 
 int main(int args, char *argv[])
 {
-	uint64_t *bptr;
-	uint64_t num;
-	uint64_t bytes;
+	uint64_t *bptr = NULL;
+	uint64_t num = 0;
+	uint64_t bytes = 0;
 
-	uint32_t malloc_err;
+	uint32_t malloc_err = 0;
 
 	struct block mb;
 
-	num = 0;
+	num = 1;
 	malloc_err = 0;
 	while (malloc_err == 0) {
 		bytes = sizeof(uint64_t) * num;
@@ -28,25 +28,23 @@ int main(int args, char *argv[])
 		bptr = malloc(bytes);
 		malloc_err = errno;
 
-		if ( (bptr == NULL) || (malloc_err != 0) ) {
+		if ( (bptr == NULL) || (malloc_err == ENOMEM) ) {
 			printf("Attempted to malloc() 0x%" PRIx64 "bytes ", bytes);
 			printf("with errno = %" PRId32 "\n", malloc_err);
 			return 0;
 		} else {
-			free(bptr);
-			mb.bptr = bptr;
 			mb.num = num;
+			mb.bptr = bptr;
+			free(bptr);
 		}
 
 		/* A chance that malloc() never fails on this platform */
-		if (bytes != UINT64_MAX) {
+		if (bytes <= UINT64_MAX) {
 			num++;
 		} else {
 			printf("Reached maximum number of bytes without malloc() error\n");
 			return 0;
 		}
-		malloc_err = 0;
 	}
-	free(bptr);
 	return 0;
 }
