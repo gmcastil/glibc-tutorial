@@ -19,7 +19,10 @@ clean:
 	${RM} -fv $(BUILD)/minfo.o $(BUILD)/minfo
 
 .PHONY: all
-all: clean
-	$(CC) -o minfo.o $(CFLAGS) minfo.c
+all:
+	$(CC) -o minfo.o \
+		$(CFLAGS) \
+		-std=c99 -Wno-unused-parameter -Wno-unused-but-set-variable \
+	       	-c minfo.c
 	$(CC) -o $(BUILD)/minfo $(LDFLAGS) minfo.o
 

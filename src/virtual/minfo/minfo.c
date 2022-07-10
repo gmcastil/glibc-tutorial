@@ -3,8 +3,6 @@
  * references to them in an orderly fashion, and displays information about the
  * status of dynamic memory allocation of the process
  *   - Create an array of pointers that will be returned from malloc() calls.
- *     For the sake of simplicity, each block of memory requested from the
- *     allocator will be sized to hold the appropriate size worth o
  *   - Create an array of mallinfo2 structs that will be returned from
  *     a sequence of mallinfo2() calls
  *   - For each pointer in the first array, request a block of memory increasing
@@ -29,15 +27,37 @@
 
 #define NUM 10
 
-int main()
+int main(int argc, char *argv[])
 {
-	size_t *blocks[NUM];
+	uint32_t i = 0;
+	size_t mallsize = 1024;
 
-	uint32_t i = -0;
+	void *blocks[NUM];
+	struct mallinfo *meminfo[NUM];
+	struct mallinfo mi;
 
 	for (i=0; i<NUM; i++) {
-		blocks[i] = malloc(
-
+		blocks[i] = NULL;
+	}
+	
+	for (i=0; i<NUM; i++) {
+		blocks[i] = malloc(mallsize);
+		if (blocks[i]) {
+			mi = mallinfo();
+			meminfo[i] = &mi;
+			mallsize = mallsize << 1;
+		} else {
+			printf("Error: Could not malloc() with size 0x%zx\n", mallsize);
+			return 1;
+		}
+	}
+	for (i=0; i<NUM; i++) {
+		if (blocks[i]) {
+			free(blocks[i]);
+		} else {
+			printf("Error: Could not free memory\n");
+		}
+	}
 	return 0;
 }
 
