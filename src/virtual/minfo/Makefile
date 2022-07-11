@@ -22,7 +22,9 @@ clean:
 all:
 	$(CC) -o minfo.o \
 		$(CFLAGS) \
-		-std=c99 -Wno-unused-parameter -Wno-unused-but-set-variable \
+		-std=c99 \
+		-Wno-deprecated-declarations \
+		-Wno-unused-parameter -Wno-unused-but-set-variable \
 	       	-c minfo.c
 	$(CC) -o $(BUILD)/minfo $(LDFLAGS) minfo.o
 
