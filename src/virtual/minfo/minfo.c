@@ -16,12 +16,12 @@
 void mi_print(struct mallinfo mi)
 {
 	printf("\n");
-	printf("Non-MMAP allocated space (bytes):\t\t%8d\n", mi.arena);
+	printf("Non-MMAP allocated space (bytes):\t%8d\n", mi.arena);
 	printf("Ordinary free blocks:\t\t\t%8d\n", mi.ordblks);
 	printf("Number of fastbin free blocks:\t\t%8d\n", mi.smblks);
 	printf("Number of MMAP allocated blocks:\t%8d\n", mi.hblks);
 	printf("Space in MMAP allocated regions:\t%8d\n", mi.hblkhd);
-	printf("Max total allocated space (bytes):\t\t%8d\n", mi.usmblks); /* always 0, preserved for backwards compatibility */
+	printf("Max total allocated space (bytes):\t%8d\n", mi.usmblks); /* always 0, preserved for backwards compatibility */
 	printf("Space in fastbin freed blocks (bytes):\t%8d\n", mi.fsmblks);
 	printf("Total allocated space (bytes):\t\t%8d\n", mi.uordblks);
 	printf("Total space in freed blocks (bytes):\t%8d\n", mi.fordblks);
