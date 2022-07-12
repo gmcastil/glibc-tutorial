@@ -8,7 +8,7 @@ CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
 
 LDFLAGS =
 
-TOP = ../..
+TOP = .
 BUILD = $(TOP)/build
 
 .PHONY: help
@@ -38,7 +38,7 @@ minfo:
 clean:
 	${RM} -fv $(BUILD)/*.o
 	${RM} -fv $(BUILD)/minfo $(BUILD)/heap_ex1 $(BUILD)/malloc_ex1
-	${RMDIR} -fv $(BUILD)
+	${RMDIR} -v $(BUILD)
 
 .PHONY: all
 all: minfo heap
