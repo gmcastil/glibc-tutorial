@@ -20,6 +20,7 @@ clean:
 
 .PHONY: all
 all:
+	$(MKDIR) -pv $(BUILD)
 	$(CC) -o minfo.o \
 		$(CFLAGS) \
 		-std=c99 \
