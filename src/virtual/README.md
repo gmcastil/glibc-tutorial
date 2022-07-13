@@ -14,7 +14,7 @@ language like Python, where inserting print statements all over the place is
 relatively easy, it became readily apparent that a similar use doesn't scale as
 easily in C.  Start learning to use the debugger sooner rather than later and
 don't avoid learning to set, save, and load breakpoints or watchpoints.  The
-debuger has a large set of features and should not be considered as an
+debugger has a large set of features and should not be considered as an
 afterthought.
 - C library versions matter and the library is constantly changing.  To find out
   which version is on your system, at least for GNU systems, you can check the
@@ -57,10 +57,11 @@ support allocation beyond 4GB).
 
 3. As an exercise in creating class-like objects using pointers and structs,
 create a list object description that supports the following:
-  - Initialization to a particular length (for now, stick to just `uint32_t`
-    type elements)
-  - Explore how one might change elements in the list (again, stick to just
-    `uint32_t` type elements)
+  - Initialization to a particular length  - should be able to contain arbitrary
+    elements
+  - Explore how one might change elements in the list
   - Define a method that supports appending new elements to the end of the
     list in the usual way
-  - Extend this list class to support arbitrary elements
+  - Define a method that supports insertion of new elements into the list and
+    another method that defines deletion of elements
+
