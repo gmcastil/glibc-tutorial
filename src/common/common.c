@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void error(char *msg)
 {
         if (msg) {
