@@ -7,8 +7,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-
-#include "common.h"
+#include <stdlib.h>
 
 #define DEFAULT_LENGTH 5  /* default length if not supplied at runtime */
 
@@ -17,6 +16,11 @@ struct node {
 	void *prev;
 	void *next;
 };
+
+void error(char *msg)
+{
+	printf("ERROR: %s\n", msg);
+}
 
 int main(int argc, char *argv[])
 {
@@ -33,9 +37,11 @@ int main(int argc, char *argv[])
 			length = (uint32_t) atoi(a);
 		} else {
 			error("NULL pointer returned");
+			return 1;
 		}
 	} else {
-		printf("Too many command line arguments\n");
+		error("Too many command line arguments");
+		return 1;
 	}
 	return 0;
 }

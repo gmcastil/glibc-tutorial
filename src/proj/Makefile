@@ -8,8 +8,11 @@ CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
 
 LDFLAGS =
 
-TOP = .
+TOP = ../..
 BUILD = $(TOP)/build
+BIN = $(TOP)/bin
+LIB = $(TOP)/lib
+INCLUDE = $(TOP)/include
 
 .PHONY: list
 list:
@@ -19,9 +22,9 @@ list:
 		-Wno-unused-but-set-variable \
 		-Wno-unused-parameter \
 		-c list.c
-	$(CC) -o $(BUILD)/list $(LDFLAGS) $(BUILD)/list.o
+	$(CC) -o $(BIN)/list $(LDFLAGS) $(BUILD)/list.o
 
 .PHONY: clean
 clean:
-	$(RM) -fv $(BUILD)/list.o $(BUILD)/list
+	$(RM) -fv $(BUILD)/list.o $(BIN)/list
 
