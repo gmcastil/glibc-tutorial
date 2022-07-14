@@ -19,12 +19,13 @@ list:
 	$(MKDIR) -pv $(BUILD)
 	$(CC) -o $(BUILD)/list.o \
 		$(CFLAGS) \
-		-Wno-unused-but-set-variable \
-		-Wno-unused-parameter \
 		-c list.c
-	$(CC) -o $(BIN)/list $(LDFLAGS) $(BUILD)/list.o
+	$(CC) -o $(BUILD)/main.o \
+		$(CFLAGS) \
+		-c main.c
+	$(CC) -o $(BIN)/list_ex $(LDFLAGS) $(BUILD)/list.o $(BUILD)/main.o
 
 .PHONY: clean
 clean:
-	$(RM) -fv $(BUILD)/list.o $(BIN)/list
+	$(RM) -fv $(BUILD)/list.o $(BIN)/list_ex
 

@@ -8,18 +8,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-struct node {
-	void *element = NULL;
-	void *next = NULL;
-	void *prev = NULL;
-};
-
-struct list {
-	void *head = NULL;
-	void *tail = NULL;
-	uint32_t length;
-};
-
 struct list list(uint32_t length)
 {
 	uint32_t i = 0;
