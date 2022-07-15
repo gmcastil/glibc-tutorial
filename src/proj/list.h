@@ -1,18 +1,12 @@
 #ifndef LIST_H
 #define LIST_H
 
-struct node {
-        void *element = NULL;
-        void *next = NULL;
-        void *prev = NULL;
-};
-
-struct list {
-        void *head = NULL;
-        void *tail = NULL;
+typedef struct List {
+        void *head;
+        void *tail;
         uint32_t length;
-};
+} list;
 
-struct list list(uint32_t length);
+list init_list(uint32_t length);
 
 #endif /* LIST_H */
