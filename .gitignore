@@ -1,6 +1,8 @@
 # Directories
 build/
 lib/
+bin/
+include/
 
 # Prerequisites
 *.d
