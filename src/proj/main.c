@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
         char *a = NULL;
 
-	list new_list;
+	struct list new_list;
 
         /* Create a doubly-linked list of length supplied as an argument */
         if (argc == 1) {

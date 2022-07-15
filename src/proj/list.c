@@ -10,18 +10,18 @@
 
 #include "list.h"
 
-typedef struct Node {
+struct node {
         void *element;
         void *next;
         void *prev;
-} node;
+};
 
-list init_list(uint32_t length)
+struct list init_list(uint32_t length)
 {
 	uint32_t i = 0;
-	node *pnode = NULL;
+	struct node *pnode = NULL;
 
-	list l;
+	struct list l;
 
 	if (length == 0) {
 		l.head = NULL;
