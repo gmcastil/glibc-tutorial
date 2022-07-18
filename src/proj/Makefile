@@ -7,7 +7,7 @@ CC = /usr/bin/gcc
 CFLAGS = -Wall -pedantic -Wextra -ansi -O0 -g
 # Some additional compiler options to use for development - still want to
 # ultimately compile without warnings using CFLAGS defined previously
-TMPCFLAGS = -Wno-unused-variable -Wno-unused-but-set-variable
+TMPCFLAGS = -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-parameter
 
 LDFLAGS =
 
