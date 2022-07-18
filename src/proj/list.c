@@ -28,13 +28,13 @@ struct list *init_list(uint32_t length)
 			lptr->tail = nptr;
 			lptr->length = 1;
 
-			(uint32_t *) nptr->element = &i;
+			nptr->element = &i;
 			/* create and populate n = 1 */
 			next_nptr = (struct node *) malloc(sizeof(struct node));
 			if (next_nptr) {
 				i++;
 				nptr->next = next_nptr;
-				(uint32_t *) next_nptr->element = &i;
+				next_nptr->element = &i;
 			} else {
 				printf("couldnt dereference NULL pointer at n = 1\n");
 			}
@@ -46,7 +46,7 @@ struct list *init_list(uint32_t length)
 			if (nptr) {
 				i++;
 				next_nptr->next = nptr;
-				(uint32_t *) nptr->element = &i;
+				nptr->element = &i;
 			} else {
 				printf("couldnt dereference NULL pointer at n = 2\n");
 			}
