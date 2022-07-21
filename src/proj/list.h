@@ -3,6 +3,7 @@
 
 struct node {
 	void *element;
+	struct node *prev;
 	struct node *next;
 };
 
