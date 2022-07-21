@@ -14,19 +14,22 @@ void error(char *msg)
 int main(int argc, char *argv[])
 {
         uint32_t length = 0;
+	uint32_t i = 0;
 
         char *a = NULL;
 
 	struct list *new_list;
 
-        /* Create a doubly-linked list of length supplied as an argument */
         if (argc == 1) {
-		new_list = init_list(DEFAULT_LENGTH);
+		new_list = list_init();
         } else if (argc == 2) {
                 a = argv[1];
                 if (a) {
                         length = (uint32_t) atoi(a);
-			new_list = init_list(length);
+			new_list = list_init();
+			for (i=0; i<length; i++) {
+				list_append(new_list, &i);
+			}
                 } else {
                         error("NULL pointer returned");
                         return 1;

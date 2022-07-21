@@ -12,51 +12,39 @@
 
 #include "list.h"
 
-struct list *init_list(uint32_t length)
+struct list *list_init(void)
 {
-	uint32_t i = 0;
 	struct node *nptr = NULL;
-	struct node *next_nptr = NULL;
-
 	struct list *lptr = malloc(sizeof(struct list));
 	if (lptr) {
-		/* create and populate n = 0 */
-		nptr = (struct node *) malloc(sizeof(struct node));
-		if (nptr) {
-			/* indicate the start of the list */
-			lptr->head = nptr;
-			lptr->tail = nptr;
-			lptr->length = 1;
-
-			nptr->element = &i;
-			/* create and populate n = 1 */
-			next_nptr = (struct node *) malloc(sizeof(struct node));
-			if (next_nptr) {
-				i++;
-				nptr->next = next_nptr;
-				next_nptr->element = &i;
-			} else {
-				printf("couldnt dereference NULL pointer at n = 1\n");
-			}
-			lptr->tail = next_nptr;
-			lptr->length = 2;
-			
-			/* create and populate n = 2 */
-			nptr = (struct node *) malloc(sizeof(struct node));
-			if (nptr) {
-				i++;
-				next_nptr->next = nptr;
-				nptr->element = &i;
-			} else {
-				printf("couldnt dereference NULL pointer at n = 2\n");
-			}
-			lptr->tail = nptr;
-			lptr->length = 3;
-			
-		} else {
-			printf("couldnt dereference NULL pointer at n = 0 stage of construction\n");
-		}
+		lptr->head = nptr;
+		lptr->tail = nptr;
+		lptr->length = 0;
+	} else {
+		printf("couldnt initialize list\n");
 	}
-
 	return lptr;
 }
+
+void list_append(struct list *lptr, void *element)
+{
+	struct node *nptr = malloc(sizeof(struct node));
+	if (nptr) {
+		nptr->element = element;
+		nptr->next = NULL;
+	} else {
+		printf("couldnt create node\n");
+	}
+
+	if ((lptr->head == NULL) && (lptr->tail == NULL)) {
+		lptr->head = nptr;
+		lptr->tail = nptr;
+		lptr->length++;
+	} else if (lptr->tail == NULL) {
+		lptr->tail = nptr;
+		lptr->length++;
+	} else {
+		printf("unable to append, corrupted list\n");
+	}	
+}
+

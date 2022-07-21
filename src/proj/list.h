@@ -3,7 +3,7 @@
 
 struct node {
 	void *element;
-	void *next;
+	struct node *next;
 };
 
 struct list {
@@ -12,6 +12,8 @@ struct list {
         uint32_t length;
 };
 
-struct list *init_list(uint32_t length);
+struct list *list_init(void);
+
+void list_append(struct list *lptr, void *element);
 
 #endif /* LIST_H */
