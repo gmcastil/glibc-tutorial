@@ -22,11 +22,9 @@ list:
 	$(MKDIR) -pv $(BUILD)
 	$(CC) -o $(BUILD)/list.o \
 		$(CFLAGS) \
-		$(TMPCFLAGS) \
 		-c list.c
 	$(CC) -o $(BUILD)/main.o \
 		$(CFLAGS) \
-		$(TMPCFLAGS) \
 		-c main.c
 	$(CC) -o $(BIN)/list_ex $(LDFLAGS) $(BUILD)/list.o $(BUILD)/main.o
 

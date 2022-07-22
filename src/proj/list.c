@@ -22,40 +22,50 @@ struct list *list_init(void)
 		lptr->length = 0;
 	} else {
 		printf("couldnt initialize list\n");
-		return NULL;
 	}
 	return lptr;
 }
 
-void list_append(struct list *lptr, void *element)
+/* 
+ * TODO: Incorporate `const` here so that its clear that neither parameter gets
+ * modified
+*/
+struct node *create_node(struct list *lptr, void *element)
 {
-	// struct node *prev_nptr = lptr->tail;
-	struct node *nptr = malloc(sizeof(struct node));
 	/* 
-	 * new nodes will always be just the pointer to the element, a pointer
-	 * to the previous node, and a NULL pointer to the next node
+	 * New nodes are just the pointer to the element, a pointer
+	 * to the previous node, and a NULL pointer for the next node
 	*/	
+	struct node *nptr = malloc(sizeof(struct node));
 	if (nptr) {
 		nptr->element = element;
 		nptr->prev = lptr->tail;
 		nptr->next = NULL;
 	} else {
-		printf("couldnt create node\n");
+		printf("Could not create node\n");
 	}
+	return nptr;
+}
 
+void list_append(struct list *lptr, void *element)
+{
 	/*
-	 * Obtain pointer to previous node
-	 * Modify the next member of the previous node to point to the next node
-	 * Modify the tail pointer of the list to point to the next node 
-	 * Increment the length member of the list
+	 * Create a new node
+	 * Stick a pointer to the new node in the 'next' member of the previous node
+	 * Reassign the tail pointer of the list to the new node
+	 * Update the length
 	 */
+	struct node *nptr = create_node(lptr, element);
+	struct node *prev_nptr = NULL;
 	if ((lptr->head == NULL) && (lptr->tail == NULL)) {
 		lptr->head = nptr;
 		lptr->tail = nptr;
 		lptr->length++;
-	} else 
 	} else {
-		printf("unable to append, corrupted list\n");
-	}	
+		prev_nptr = lptr->tail;
+		prev_nptr->next = nptr;
+		lptr->tail = nptr;
+		lptr->length++;
+	}
 }
 

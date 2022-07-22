@@ -15,6 +15,8 @@ struct list {
 
 struct list *list_init(void);
 
+struct node *create_node(struct list *lptr, void *element);
+
 void list_append(struct list *lptr, void *element);
 
 #endif /* LIST_H */
