@@ -21,7 +21,7 @@ struct list *list_init(void)
 		lptr->tail = nptr;
 		lptr->length = 0;
 	} else {
-		printf("couldnt initialize list\n");
+		fprintf(stderr, "couldnt initialize list\n");
 	}
 	return lptr;
 }
@@ -42,7 +42,7 @@ struct node *create_node(struct list *lptr, void *element)
 		nptr->prev = lptr->tail;
 		nptr->next = NULL;
 	} else {
-		printf("Could not create node\n");
+		fprintf(stderr, "could not create node\n");
 	}
 	return nptr;
 }
@@ -56,16 +56,22 @@ void list_append(struct list *lptr, void *element)
 	 * Update the length
 	 */
 	struct node *nptr = create_node(lptr, element);
-	struct node *prev_nptr = NULL;
-	if ((lptr->head == NULL) && (lptr->tail == NULL)) {
-		lptr->head = nptr;
-		lptr->tail = nptr;
-		lptr->length++;
+	if (nptr) {
+		struct node *prev_nptr = NULL;
+		if (lptr->head == NULL && lptr->tail == NULL) {
+			lptr->head = nptr;
+			lptr->tail = nptr;
+			lptr->length++;
+		} else if (lptr->head == NULL && lptr->tail != NULL) {
+			fprintf(stderr, "corrupted list\n");
+		} else {
+			prev_nptr = lptr->tail;
+			prev_nptr->next = nptr;
+			lptr->tail = nptr;
+			lptr->length++;
+		}
 	} else {
-		prev_nptr = lptr->tail;
-		prev_nptr->next = nptr;
-		lptr->tail = nptr;
-		lptr->length++;
+		fprintf(stderr, "could not append to list\n");
 	}
 }
 
