@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -7,30 +8,50 @@
  * when requested
 */
 
+void free_element(void *ele_ptr);
+struct element *create_element(void *ele_ptr);
+
 struct element {
 	void *ele_ptr;
-	uint32_t ele_size;
+	void (*free_element)(void *ele_ptr);
+	void (*repr_element)(void *ele_ptr);
 };
 
-void *create_element(void:wq
+struct element *create_element(void *ele_ptr)
+{
+	struct element *created;
+	created = malloc(sizeof(struct element));
+	if (created) {
+		created->ele_ptr = ele_ptr;
+	}
+	return created;
+}
 
 void free_element(void *ele_ptr)
 {
 	if (ele_ptr) {
 		free(ele_ptr);
+	} else {
+		fprintf(stderr, "will not attempt to free NULL pointer\n");
 	}
+}
+
+void repr_element(void *ele_ptr)
+{
+	fprintf(stdout, "this would be a representation of the element\n");
 }
 
 int main(int argc, char *argv[])
 {
 
-	uint32_t *ptra = NULL;
-	uint64_t *ptrb = NULL;
-	char *ptrc = NULL;
+	void *block = NULL;
+	struct element* ptr;
 
-	/* Heap alloc for 32-bit */
-	ptra = malloc(sizeof(uint32_t));
-	free_element(ptra);
+	block = malloc(1024);
+
+	ptr = create_element(block);
+	repr_element(ptr);
+	free_element(ptr);
 
 	return 0;
 }
