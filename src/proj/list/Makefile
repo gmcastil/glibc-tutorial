@@ -11,7 +11,7 @@ TMPCFLAGS = -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-parame
 
 LDFLAGS =
 
-TOP = ../..
+TOP = .
 BUILD = $(TOP)/build
 BIN = $(TOP)/bin
 LIB = $(TOP)/lib
@@ -20,6 +20,7 @@ INCLUDE = $(TOP)/include
 .PHONY: list
 list:
 	$(MKDIR) -pv $(BUILD)
+	$(MKDIR) -pv $(BIN)
 	$(CC) -o $(BUILD)/list.o \
 		$(CFLAGS) \
 		-c list.c
