@@ -29,7 +29,17 @@ list:
 		-c main.c
 	$(CC) -o $(BIN)/list_ex $(LDFLAGS) $(BUILD)/list.o $(BUILD)/main.o
 
+.PHONY: element
+element:
+	$(MKDIR) -pv $(BUILD)
+	$(MKDIR) -pv $(BIN)
+	$(CC) -o $(BUILD)/element.o \
+		$(CFLAGS) \
+		-c element.c
+	$(CC) -o $(BIN)/element $(LDFLAGS) $(BUILD)/element.o 
+
 .PHONY: clean
 clean:
 	$(RM) -fv $(BUILD)/list.o $(BUILD)/main.o $(BIN)/list_ex
+	$(RM) -fv $(BUILD)/element.o $(BIN)/element
 
