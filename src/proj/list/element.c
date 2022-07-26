@@ -87,9 +87,10 @@ int main(int argc, char *argv[])
 	uint8_t val = 0x55;
 	struct element *first = create_element(bsize);
 
-	purge(first, bsize, val);
-	dump(first, bsize);
-	destroy(first, bsize);
+	/* These functions all do what I would expect them to do */
+	/* purge(first, bsize, val); */
+	/* dump(first, bsize); */
+	/* destroy(first, bsize); */
 
 	return 0;
 }
