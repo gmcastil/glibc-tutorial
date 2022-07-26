@@ -1,10 +1,3 @@
-/*
- * Implement a list-like data structure with the following features:
- * - Dynamically allocated
- * - Initialize to a length
- * - Support insertion, deletion
-*/
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
