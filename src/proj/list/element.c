@@ -31,9 +31,10 @@
 struct element {
 	void *bptr;
 	uint32_t bsize;
+	/*
 	void (*purge)(void *bptr, uint32_t bsize, uint8_t val);
-	void (*dump)(void *bptr, uint32_t bsize);
-	void (*destroy)(void *bptr, uint32_t bsize);
+	void (*dump)(*bptr, bsize);
+	void (*destroy)(void *bptr, uint32_t bsize); */
 };
 
 struct element *create_element(uint32_t bsize)
@@ -79,6 +80,11 @@ void destroy(void *bptr, uint32_t bsize)
 {
 	purge(bptr, bsize, 0x00);
 	free(bptr);
+	/*
+	 * Note that GNU free() makes no claims it will NULL the pointer, even
+	 * though it points to memory that is no longer allocated
+	*/
+	bptr = NULL;
 }
 
 int main(int argc, char *argv[])
@@ -87,10 +93,20 @@ int main(int argc, char *argv[])
 	uint8_t val = 0x55;
 	struct element *first = create_element(bsize);
 
-	/* These functions all do what I would expect them to do */
-	/* purge(first, bsize, val); */
-	/* dump(first, bsize); */
-	/* destroy(first, bsize); */
+	/* 
+	 * These just call the functions directly with the struct, size, and
+	 * values as arguments
+	*/
+	purge(first, bsize, val);
+	dump(first, bsize);
+	destroy(first, bsize);
+
+	val = 0xAA;
+
+	/* This should segfault (or be caught by a NULL pointer check) */
+	purge(first, bsize, val);
+	dump(first, bsize);
+	destroy(first, bsize);
 
 	return 0;
 }
