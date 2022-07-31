@@ -54,6 +54,7 @@ struct element *create_element(uint32_t bsize)
 		if (bptr) {
 			eptr->bptr = bptr;
 			eptr->bsize = bsize;
+			purge(bptr, bsize, 0x00);
 			fprintf(stdout, "allocated %#"PRIx32" bytes\n", bsize);
 		} else {
 			free(eptr);
@@ -112,18 +113,31 @@ void dump(struct element *eptr)
 	}
 }
 
-/*
 void destroy(struct element *eptr)
 {
-	purge(bptr, bsize, 0x00);
-	free(bptr);
-	
-	 * Note that GNU free() makes no claims it will NULL the pointer, even
+	uint32_t bsize = 0;
+
+	if (eptr) {
+		bsize = eptr->bsize;
+		if (eptr->bptr && bsize) {
+			purge(eptr->bptr, bsize, 0x00);
+	/*
+	 * GNU free() makes no claims that it will NULL the pointer, even
 	 * though it points to memory that is no longer allocated
-	
-	bptr = NULL;
+	*/
+			free(eptr->bptr);
+			eptr->bptr = NULL;
+			free(eptr);
+			eptr= NULL;
+		} else {
+			fprintf(stderr, "could not destroy element object\n");
+			exit(1);
+		}
+	} else {
+		fprintf(stderr, "could not destroy NULL pointer\n");
+		exit(1);
+	}
 }
-*/
 
 int main(int argc, char *argv[])
 {
@@ -134,9 +148,10 @@ int main(int argc, char *argv[])
 	purge(first->bptr, bsize, purgeval);
 	dump(first);
 
-	/* Try to purge a destroyed block or soemthing here...not sure */
-	/* This should segfault (or be caught by a NULL pointer check) */
-	/*purge(first, bsize, val); */
+	destroy(first);
+	/* this attempt to dump() the element should compile without warnings,
+	 * but give valgrind fits and be caught by a NULL pointer check */
+	dump(first);
 
 	return 0;
 }
