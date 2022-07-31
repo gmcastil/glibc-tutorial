@@ -120,6 +120,10 @@ void destroy(struct element *eptr)
 	if (eptr) {
 		bsize = eptr->bsize;
 		if (eptr->bptr && bsize) {
+	/*
+	 * since deallocating memory is not guaranteed to clear it, we choose to
+	 * zero it out prior to calling free()
+	*/
 			purge(eptr->bptr, bsize, 0x00);
 	/*
 	 * GNU free() makes no claims that it will NULL the pointer, even
@@ -127,6 +131,7 @@ void destroy(struct element *eptr)
 	*/
 			free(eptr->bptr);
 			eptr->bptr = NULL;
+			purge(eptr, sizeof(struct element), 0x00);
 			free(eptr);
 			eptr= NULL;
 		} else {
@@ -143,6 +148,7 @@ int main(int argc, char *argv[])
 {
 	uint32_t bsize = 256;
 	uint8_t purgeval = 0x55;
+
 	struct element *first = create_element(bsize);
 	dump(first);
 	purge(first->bptr, bsize, purgeval);
@@ -151,7 +157,10 @@ int main(int argc, char *argv[])
 	destroy(first);
 	/* this attempt to dump() the element should compile without warnings,
 	 * but give valgrind fits and be caught by a NULL pointer check */
+	/* dump(first); */
+	first = create_element(bsize);
 	dump(first);
+	destroy(first);
 
 	return 0;
 }
