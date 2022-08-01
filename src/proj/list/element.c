@@ -37,16 +37,14 @@ void dump(struct element *eptr);
 struct element {
 	void *bptr;
 	uint32_t bsize;
-	/*
-	void (*purge)(void *bptr, uint32_t bsize, uint8_t val);
-	void (*dump)(*bptr, bsize);
-	void (*destroy)(void *bptr, uint32_t bsize); */
+	void (*destruct)(struct element *eptr);
 };
 
 struct element *create_element(uint32_t bsize)
 {
 	void *bptr = NULL;
 	struct element *eptr = NULL;
+	void (*destruct)(struct element *) = NULL;
 
 	eptr = malloc(sizeof(struct element));
 	if (eptr) {
@@ -65,6 +63,8 @@ struct element *create_element(uint32_t bsize)
 		fprintf(stderr, "could not allocate %#"PRIx64" bytes\n", sizeof(struct element));
 		exit(1);
 	}
+	eptr->destruct = &(destroy)(eptr);
+
 	return eptr;
 }
 
@@ -146,18 +146,19 @@ void destroy(struct element *eptr)
 
 int main(int argc, char *argv[])
 {
-	uint32_t bsize = 256;
+	uint32_t bsize = 64;
 	uint8_t purgeval = 0x55;
 
 	struct element *first = create_element(bsize);
-	dump(first);
 	purge(first->bptr, bsize, purgeval);
 	dump(first);
 
-	destroy(first);
+	first->(*destruct);
+
 	/* this attempt to dump() the element should compile without warnings,
 	 * but give valgrind fits and be caught by a NULL pointer check */
 	/* dump(first); */
+
 	first = create_element(bsize);
 	dump(first);
 	destroy(first);
