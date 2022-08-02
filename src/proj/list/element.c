@@ -31,27 +31,27 @@
 void purge(void *bptr, uint32_t bsize, uint8_t val);
 
 struct element *create_element(uint32_t bsize);
-void destroy(struct element *eptr);
+void destroy(struct element **eptr);
 void dump(struct element *eptr);
 
 struct element {
 	void *bptr;
 	uint32_t bsize;
-	void (*destruct)(struct element *eptr);
+	void (*destroy) (struct element **eptr);
 };
 
 struct element *create_element(uint32_t bsize)
 {
 	void *bptr = NULL;
 	struct element *eptr = NULL;
-	void (*destruct)(struct element *) = NULL;
 
-	eptr = malloc(sizeof(struct element));
+	eptr = (struct element *) malloc(sizeof(struct element));
 	if (eptr) {
 		bptr = malloc(bsize);
 		if (bptr) {
 			eptr->bptr = bptr;
 			eptr->bsize = bsize;
+			eptr->destroy = &destroy;
 			purge(bptr, bsize, 0x00);
 			fprintf(stdout, "allocated %#"PRIx32" bytes\n", bsize);
 		} else {
@@ -63,7 +63,6 @@ struct element *create_element(uint32_t bsize)
 		fprintf(stderr, "could not allocate %#"PRIx64" bytes\n", sizeof(struct element));
 		exit(1);
 	}
-	eptr->destruct = &(destroy)(eptr);
 
 	return eptr;
 }
@@ -113,27 +112,27 @@ void dump(struct element *eptr)
 	}
 }
 
-void destroy(struct element *eptr)
+void destroy(struct element **eptr)
 {
 	uint32_t bsize = 0;
 
-	if (eptr) {
-		bsize = eptr->bsize;
-		if (eptr->bptr && bsize) {
+	if (*eptr) {
+		bsize = (*eptr)->bsize;
+		if ((*eptr)->bptr && bsize) {
 	/*
 	 * since deallocating memory is not guaranteed to clear it, we choose to
 	 * zero it out prior to calling free()
 	*/
-			purge(eptr->bptr, bsize, 0x00);
+			purge((*eptr)->bptr, bsize, 0x00);
 	/*
 	 * GNU free() makes no claims that it will NULL the pointer, even
 	 * though it points to memory that is no longer allocated
 	*/
-			free(eptr->bptr);
-			eptr->bptr = NULL;
-			purge(eptr, sizeof(struct element), 0x00);
-			free(eptr);
-			eptr= NULL;
+			free((*eptr)->bptr);
+			(*eptr)->bptr = NULL;
+			purge(*eptr, sizeof(struct element), 0x00);
+			free(*eptr);
+			*eptr= NULL;
 		} else {
 			fprintf(stderr, "could not destroy element object\n");
 			exit(1);
@@ -144,16 +143,18 @@ void destroy(struct element *eptr)
 	}
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *env[])
 {
 	uint32_t bsize = 64;
 	uint8_t purgeval = 0x55;
 
 	struct element *first = create_element(bsize);
+	dump(first);
 	purge(first->bptr, bsize, purgeval);
 	dump(first);
 
-	first->(*destruct);
+	printf("env %s\n", *env);
+	printf("argv %s\n", *argv);
 
 	/* this attempt to dump() the element should compile without warnings,
 	 * but give valgrind fits and be caught by a NULL pointer check */
@@ -161,7 +162,11 @@ int main(int argc, char *argv[])
 
 	first = create_element(bsize);
 	dump(first);
-	destroy(first);
+	first->destroy(&first);
+
+	if (first != NULL) {
+		printf("isnt null\n");
+	}
 
 	return 0;
 }
