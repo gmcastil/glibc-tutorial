@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 /*
  * Define an element struct, which contains a method for creating arbitrary
@@ -23,10 +24,6 @@
  * region with a constant value (e.g., 0x00 for block 0, 0x01 for block 1, etc),
  * then access each, dump it to stdout, then free each element.
 */
-
-#include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
 
 void purge(void *bptr, uint32_t bsize, uint8_t val);
 
