@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#ifdef LEAK_CHECK_ON
+#ifdef LEAK_CHECK
 void foo()
 {
 	printf("leak check yes\n");
