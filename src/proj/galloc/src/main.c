@@ -4,17 +4,22 @@
 #include <inttypes.h>
 
 #ifdef LEAK_CHECK
-void foo()
-{
-	printf("leak check yes\n");
-	return;
-}
+#include "galloc.h"
 #else
-void foo()
+
+void *gmalloc(size_t);
+void gfree(void *);
+
+void *gmalloc(size_t size)
 {
-	printf("leak check no\n");
-	return;
+	return malloc(sizeof(size));
 }
+
+void gfree(void *ptr)
+{
+	free(ptr);
+}
+
 #endif
 
 void null_ptr_err(void *);
@@ -33,14 +38,12 @@ int main(int argc, char *argv[])
 	uint32_t bsize = 1024;
 
 	/* simple case using malloc() and free() via wrapper functions */
-	bptr = malloc(bsize);
+	bptr = gmalloc(bsize);
 	if (bptr) {
-		free(bptr);
+		gfree(bptr);
 	} else {
 		null_ptr_err(bptr);
 	}
-
-	foo();
 
 	return 0;
 }
