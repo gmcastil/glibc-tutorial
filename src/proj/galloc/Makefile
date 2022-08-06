@@ -15,31 +15,21 @@ LIB = $(TOP)/lib
 SRC = $(TOP)/src
 INCLUDE = $(TOP)/include
 
-# Wrap GNU allocator
-MALLOC_FLAGS =
-WITH_GNU_MALLOC ?= 0
-ifeq ($(WITH_GNU_MALLOC), 1)
-	MALLOC_FLAGS += -ULEAK_CHECK
-else
-	MALLOC_FLAGS += -DLEAK_CHECK -I$(INCLUDE)
-	LDFLAGS += -L$(LIB) -lgalloc
-endif
+.PHONY: wrapped
+wrapped:
+	$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
+	$(CC) $(CFLAGS) -fPIC -o $(BUILD)/galloc.o -c $(SRC)/galloc.c
+	$(CC) $(CFLAGS) -fPIC -shared -o $(LIB)/libgalloc.so $(BUILD)/galloc.o
+	$(CC) $(CFLAGS) -DLEAK_CHECK -I$(INCLUDE) -L$(LIB) -o $(BIN)/main $(SRC)/main.c -lgalloc
 
-all: $(LIB)/libgalloc.so $(BUILD)/main.o $(BIN)/main
+#	$(CC) $(CFLAGS) -DLEAK_CHECK -I$(INCLUDE) -o $(BUILD)/main.o -c $(SRC)/main.c
+#	$(CC) $(LDFLAGS) -I$(INCLUDE) -L$(LIB) -lgalloc -o $(BIN)/main $(BUILD)/main.o
 
-$(BIN)/main:
-	@$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
+.PHONY: gnu-malloc
+gnu-malloc:
+	$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
+	$(CC) $(CFLAGS) -ULEAK_CHECK -o $(BUILD)/main.o -c $(SRC)/main.c
 	$(CC) $(LDFLAGS) -o $(BIN)/main $(BUILD)/main.o
-
-$(BUILD)/main.o:
-	@$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
-	$(CC) $(CFLAGS) $(MALLOC_FLAGS) \
-		-o $(BUILD)/main.o -c $(SRC)/main.c
-
-$(LIB)/libgalloc.so:
-	@$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
-	$(CC) $(CFLAGS) -fPIC -c $(SRC)/galloc.c -o $(BUILD)/galloc.o
-	$(CC) $(CFLAGS) -shared $(BUILD)/galloc.o -o $(LIB)/libgalloc.so
 
 .PHONY: clean
 clean:
