@@ -15,18 +15,20 @@ LIB = $(TOP)/lib
 SRC = $(TOP)/src
 INCLUDE = $(TOP)/include
 
-$(BIN)/main: $(BUILD)/main.o
+$(BIN)/main: $(BUILD)/main.o $(LIB)/libgalloc.so
+	$(MKDIR) -pv $(BIN)
 	$(CC) $(LDFLAGS) -I$(INCLUDE) -L$(LIB) -lgalloc $(BUILD)/main.o -o $(BIN)/main
 
-$(BUILD)/main.o: $(LIB)/libgalloc.so
+$(BUILD)/main.o: $(SRC)/main.c
+	$(MKDIR) -pv $(BUILD)
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c $(SRC)/main.c -o $(BUILD)/main.o
 
-$(LIB)/libgalloc.so:
+$(LIB)/libgalloc.so: $(SRC)/galloc.c
+	$(MKDIR) -pv $(BUILD) $(LIB)
 	$(CC) $(CFLAGS) -fPIC -c $(SRC)/galloc.c -o $(BUILD)/galloc.o
-	$(CC) $(LDFLAGS) -shared $(BUILD)/galloc.o -o $(LIB)/libgalloc.so
+	$(CC) $(CFLAGS) -shared $(BUILD)/galloc.o -o $(LIB)/libgalloc.so
 
 .PHONY: clean
 clean:
-	$(MKDIR) -pv $(BUILD) $(BIN) $(LIB) $(INCLUDE)
 	$(RM) -fv $(BUILD)/main.o $(BIN)/main
 	$(RM) -fv $(BUILD)/galloc.o $(LIB)/libgalloc.so
