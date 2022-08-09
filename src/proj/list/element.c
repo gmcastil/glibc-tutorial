@@ -25,19 +25,22 @@
  * then access each, dump it to stdout, then free each element.
 */
 
-void purge(void *bptr, uint32_t bsize, uint8_t val);
-
-struct element *create_element(uint32_t bsize);
-void destroy(struct element **eptr);
-void dump(struct element *eptr);
-
 struct element {
 	void *bptr;
 	uint32_t bsize;
+	void (*purge) (struct element *eptr, uint8_t val);
+	void (*dump) (struct element *eptr)
 	void (*destroy) (struct element **eptr);
+
 };
 
-struct element *create_element(uint32_t bsize)
+struct element *create(uint32_t bsize);
+
+void destroy(struct element **eptr);
+void purge(struct element *eptr, uint8_t val);
+void dump(struct element *eptr);
+
+struct element *create(uint32_t bsize)
 {
 	void *bptr = NULL;
 	struct element *eptr = NULL;
@@ -64,7 +67,7 @@ struct element *create_element(uint32_t bsize)
 	return eptr;
 }
 
-void purge(void *bptr, uint32_t bsize, uint8_t val)
+void purge(void *bptr, uint8_t val)
 {
 	uint8_t *bptr_8b = bptr;
 	uint32_t i = 0;
