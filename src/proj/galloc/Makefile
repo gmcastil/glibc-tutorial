@@ -17,7 +17,7 @@ INCLUDE = $(TOP)/include
 
 $(BIN)/main: $(BUILD)/main.o $(LIB)/libgalloc.so
 	$(MKDIR) -pv $(BIN)
-	$(CC) $(LDFLAGS) -I$(INCLUDE) -L$(LIB) -lgalloc $(BUILD)/main.o -o $(BIN)/main
+	$(CC) $(LDFLAGS) -I$(INCLUDE) -L$(LIB) $(BUILD)/main.o -o $(BIN)/main -lgalloc 
 
 $(BUILD)/main.o: $(SRC)/main.c
 	$(MKDIR) -pv $(BUILD)
