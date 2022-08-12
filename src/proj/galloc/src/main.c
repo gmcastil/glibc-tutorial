@@ -3,7 +3,16 @@
 #include <stdint.h>
 #include <inttypes.h>
 
+#ifdef WITH_GNU_MALLOC
+
+void *gmalloc(size_t);
+void free(void *);
+
+#else
+
 #include "galloc.h"
+
+#endif
 
 int main(int argc, char *argv[])
 {
