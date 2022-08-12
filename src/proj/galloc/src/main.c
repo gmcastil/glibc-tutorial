@@ -23,6 +23,11 @@ int main(int argc, char *argv[])
 	bptr = gmalloc(bsize);
 	gfree(bptr);
 
+#ifdef WITH_GNU_MALLOC
+	gmallinfo()
+
+#else
+
 	return 0;
 }
 
